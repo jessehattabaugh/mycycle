@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node test",
-    "dev": "webpack help"
+    "prestart": "node build"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,10 @@
   },
   "homepage": "https://github.com/jessehattabaugh/mycycle",
   "dependencies": {
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.1",
     "cyclejs": "^0.22.0",
+    "shelljs": "^0.5.0",
     "webpack": "^1.9.10"
   }
 }
