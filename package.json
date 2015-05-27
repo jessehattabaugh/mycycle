@@ -1,0 +1,22 @@
+{
+  "name": "mycycle",
+  "version": "0.0.0",
+  "description": "my cycle.js app",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jessehattabaugh/mycycle.git"
+  },
+  "keywords": [
+    "cycle.js"
+  ],
+  "author": "Jesse Hattabaugh",
+  "license": "Artistic License 2.0",
+  "bugs": {
+    "url": "https://github.com/jessehattabaugh/mycycle/issues"
+  },
+  "homepage": "https://github.com/jessehattabaugh/mycycle"
+}
