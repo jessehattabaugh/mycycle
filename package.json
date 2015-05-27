@@ -4,7 +4,8 @@
   "description": "my cycle.js app",
   "main": "index.js",
   "scripts": {
-    "test": "node test"
+    "test": "node test",
+    "dev": "webpack help"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/jessehattabaugh/mycycle/issues"
   },
-  "homepage": "https://github.com/jessehattabaugh/mycycle"
+  "homepage": "https://github.com/jessehattabaugh/mycycle",
+  "dependencies": {
+    "cyclejs": "^0.22.0",
+    "webpack": "^1.9.10"
+  }
 }
