@@ -3,17 +3,20 @@
 let cycle = require('cyclejs');
 let h = cycle.h;
 
-function app(events) {
-  return render(state(actions(events)));
-}
+cycle.applyToDOM('main', events => view(model(intent(events))));
+console.log('app started');
 
-function actions(events) {
+/* Intent - user actions
+*******************************************************************************/
+function intent(events) {
   return {
     login: events.get('button#login', 'click')
   };
 }
 
-function state(actions) {
+/* Model - application state
+*******************************************************************************/
+function model(actions) {
   return {
     mode: actions.login.map(function (event) {
       return 'login';
@@ -21,7 +24,9 @@ function state(actions) {
   };
 }
 
-function render(state) {
+/* View - DOM rendering
+*******************************************************************************/
+function view(state) {
   return state.mode.startWith('').map(function (mode) {
     return h('div', [
       h('button#login', 'Login'),
@@ -33,6 +38,3 @@ function render(state) {
     ]);
   });
 }
-
-cycle.applyToDOM('main', app);
-console.log('app started');
