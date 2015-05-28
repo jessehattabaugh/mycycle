@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node test",
-    "prestart": "node build &"
+    "prestart": "node build &",
+    "kill": "killall -9 npm && killall -9 node"
   },
   "repository": {
     "type": "git",
