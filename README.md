@@ -11,4 +11,4 @@ Watchers will automatically recompile code in /src, but you need a livereload br
 ## My Thoughts
 I got hooked on Reactive programming while using Knockout. I loved how I could use Observables to wire up my Models and data would just flow wherever it needed to go. It beguiles me to no end that React isn't actually Reactive. VDOM sounds like a pretty good idea, but I don't like React's API. 
 
-So I was pretty excited when I read about Cycle.js
+So I was pretty excited when I read about Cycle.js. Rx Observables sounded archaic and complicated compared to KO's Observables which are just getter/setter functions. 

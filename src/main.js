@@ -30,15 +30,28 @@ function model(actions) {
 /* View - DOM rendering
 *******************************************************************************/
 function view(state) {
-  return state.mode.startWith('').map(function (mode) {
-    return h('div', [
-      h('button#login', 'Login'),
-      h('a', {href: '#login'}, 'Login'),
-      mode == 'login' ? h('section.modal', [
-        h('h1', 'Login'),
-        h('input#username'),
-        h('input#password')
-      ]) : null
-    ]);
-  });
+  
+  function modal(mode) {
+    if(mode === 'login') {
+      return h('section', [
+        h('h1', 'Please Login'),
+        h('label', [
+          h('input', {type: 'email'})
+        ], 'Email'),
+        h('label', [
+          h('input', {type: 'password'})
+        ], 'Password')
+      ]);
+    }
+  }
+  
+  return state.mode
+    .startWith('')
+    .map(function (mode) {
+      return h('div', [
+        h('button#login', 'Login'),
+        h('a', {href: '#login'}, 'Login'),
+        modal(mode)
+      ]);
+    });
 }
