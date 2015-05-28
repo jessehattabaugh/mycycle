@@ -13,6 +13,7 @@ function intent(events) {
     login: cycle.Rx.Observable.merge(
       events.get('button#login', 'click'),
       cycle.Rx.Observable.fromEvent(window, 'hashchange')
+        .startWith({target: window}) // run on startup
         .filter(e => e.target.location.hash === '#login')
     )
   };
@@ -32,6 +33,7 @@ function view(state) {
   return state.mode.startWith('').map(function (mode) {
     return h('div', [
       h('button#login', 'Login'),
+      h('a', {href: '#login'}, 'Login'),
       mode == 'login' ? h('section.modal', [
         h('h1', 'Login'),
         h('input#username'),
