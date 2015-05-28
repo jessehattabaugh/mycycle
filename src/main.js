@@ -10,7 +10,11 @@ console.log('app started');
 *******************************************************************************/
 function intent(events) {
   return {
-    login: events.get('button#login', 'click')
+    login: cycle.Rx.Observable.merge(
+      events.get('button#login', 'click'),
+      cycle.Rx.Observable.fromEvent(window, 'hashchange')
+        .filter(e => e.target.location.hash === '#login')
+    )
   };
 }
 
@@ -18,9 +22,7 @@ function intent(events) {
 *******************************************************************************/
 function model(actions) {
   return {
-    mode: actions.login.map(function (event) {
-      return 'login';
-    })
+    mode: actions.login.map(e => 'login')
   };
 }
 
