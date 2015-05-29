@@ -4,6 +4,7 @@ let fs = require('fs');
 let sh = require('shelljs');
 let browserify = require('browserify');
 let jade = require('jade');
+let postcss = require('postcss');
 let chokidar = require('chokidar');
 
 let config = require('./config');
@@ -14,7 +15,7 @@ let config = require('./config');
 clean()
   .then(js)
   .then(html)
-  //.then(css)
+  .then(css)
   .then(watch)
   .catch(function (err) {
     console.error(err);
@@ -51,14 +52,38 @@ function js() {
 function html() {
   return new Promise(function (resolve, reject) {
     var fn = jade.compileFile(
-      config.jadeIn, 
+      config.htmlIn, 
       {
         cache: false,
-        pretty: config.min,
+        pretty: !config.min,
       }
     );
-    fs.writeFile(config.jadeOut, fn(config));
+    fs.writeFile(config.htmlOut, fn(config));
     console.log('html compiled');
+    resolve();
+  });
+}
+
+/* css
+*****************************************************************************/
+function css() {
+  return new Promise(function (resolve, reject) {
+    
+    let processor = postcss([
+      require('postcss-import')({path: []}),
+      require('autoprefixer')('> 1%')
+    ]);
+    
+    var src = fs.readFileSync(config.cssIn, "utf8");
+    
+    var out = processor.process(src, {
+      from: config.cssIn,
+      to: config.cssOut
+    });
+    
+    fs.writeFileSync(config.cssOut, out.css);
+    
+    console.log('css compiled');
     resolve();
   });
 }
@@ -76,6 +101,8 @@ function watch() {
     chokidar.watch(config.jsWatch)
       .on('change', redo(js));
     chokidar.watch(config.htmlWatch)
+      .on('change', redo(html));
+    chokidar.watch(config.cssWatch)
       .on('change', redo(html));
     console.log('watchers initialized');
     resolve();

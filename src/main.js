@@ -6,52 +6,71 @@ let h = cycle.h;
 cycle.applyToDOM('main', events => view(model(intent(events))));
 console.log('app started');
 
-/* Intent - user actions
+/* Intent -> user actions
 *******************************************************************************/
 function intent(events) {
   return {
-    login: cycle.Rx.Observable.merge(
-      events.get('button#login', 'click'),
+    nav: cycle.Rx.Observable.merge(
       cycle.Rx.Observable.fromEvent(window, 'hashchange')
         .startWith({target: window}) // run on startup
-        .filter(e => e.target.location.hash === '#login')
+        .map(e => e.target.location.hash.replace("#", ""))
     )
   };
 }
 
-/* Model - application state
+/* Model -> application state
 *******************************************************************************/
 function model(actions) {
-  return {
-    mode: actions.login.map(e => 'login')
-  };
+  
+  let page = actions.nav.map(function (hash) {
+    console.log(`nav action fired: ${hash}`);
+    return hash || 'home';
+  });
+  
+  return cycle.Rx.Observable.merge(page);
 }
 
-/* View - DOM rendering
+/* View -> virtual-dom tree
 *******************************************************************************/
 function view(state) {
   
-  function modal(mode) {
-    if(mode === 'login') {
-      return h('section', [
-        h('h1', 'Please Login'),
-        h('label', [
-          h('input', {type: 'email'})
-        ], 'Email'),
-        h('label', [
-          h('input', {type: 'password'})
-        ], 'Password')
-      ]);
+  function navTabs(page) {
+    return h('ul.nav.nav-tabs', [
+      h('li', {className: page == 'home' ? 'active' : ''}, [
+        h('a', {'href': '#'}, 'Home')
+      ]),
+      h('li', {className: page == 'about' ? 'active' : ''}, [
+        h('a', {'href': '#about'}, 'About')
+      ]),
+      h('li', {className: page == 'contact' ? 'active' : ''}, [
+        h('a', {'href': '#contact'}, 'Contact')
+      ])
+    ]);
+  }
+  
+  function sections(page) {
+    switch (page) {
+      case 'contact':
+        return h('section', [
+          h('h1', 'Contact Info')
+        ]);
+      case 'about':
+        return h('section', [
+          h('h1', 'About Us')
+        ]);
+      case 'home':
+        return h('section', [
+          h('h1', 'Welcome')
+        ]);
     }
   }
   
-  return state.mode
+  return state
     .startWith('')
-    .map(function (mode) {
-      return h('div', [
-        h('button#login', 'Login'),
-        h('a', {href: '#login'}, 'Login'),
-        modal(mode)
+    .map(function (page) {
+      return h('article', [
+        navTabs(page),
+        sections(page)
       ]);
     });
 }

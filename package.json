@@ -22,12 +22,16 @@
   },
   "homepage": "https://github.com/jessehattabaugh/mycycle",
   "dependencies": {
+    "autoprefixer": "^5.2.0",
     "babelify": "^6.1.2",
+    "bootstrap": "^3.3.4",
     "browserify": "^10.2.1",
     "chokidar": "^1.0.1",
     "cyclejs": "^0.22.0",
     "jade": "^1.10.0",
     "node-static": "^0.7.6",
+    "postcss": "^4.1.11",
+    "postcss-import": "^5.2.2",
     "shelljs": "^0.5.0",
     "webpack": "^1.9.10"
   }
