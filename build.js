@@ -1,5 +1,6 @@
 'use strict';
 
+// external dependencies
 let fs = require('fs');
 let sh = require('shelljs');
 let browserify = require('browserify');
@@ -7,6 +8,7 @@ let jade = require('jade');
 let postcss = require('postcss');
 let chokidar = require('chokidar');
 
+// internal dependencies
 let config = require('./config');
 
 
@@ -55,7 +57,7 @@ function html() {
       config.htmlIn, 
       {
         cache: false,
-        pretty: !config.min,
+        pretty: !config.min
       }
     );
     fs.writeFile(config.htmlOut, fn(config));
@@ -64,25 +66,20 @@ function html() {
   });
 }
 
-/* css
+/* process css with postcss
 *****************************************************************************/
 function css() {
   return new Promise(function (resolve, reject) {
-    
     let processor = postcss([
       require('postcss-import')({path: []}),
       require('autoprefixer')('> 1%')
     ]);
-    
-    var src = fs.readFileSync(config.cssIn, "utf8");
-    
-    var out = processor.process(src, {
+    let src = fs.readFileSync(config.cssIn, "utf8");
+    let out = processor.process(src, {
       from: config.cssIn,
       to: config.cssOut
     });
-    
     fs.writeFileSync(config.cssOut, out.css);
-    
     console.log('css compiled');
     resolve();
   });
@@ -94,7 +91,7 @@ function watch() {
   function redo(fn) {
     return function (path, stat) {
       console.info(`file '${path}' changed ${stat.size} bytes`);
-      fn();
+      setTimeout(fn, 5000);
     };
   }
   return new Promise(function (resolve, reject) {
